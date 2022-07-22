@@ -1,0 +1,17 @@
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    max-width: 250px;
+    justify-items: center;
+
+}
+
+#character-choice {
+    display: flex;
+}
+
+body {
+    display: grid;
+    justify-content: center;
+}
