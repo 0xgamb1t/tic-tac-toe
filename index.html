@@ -7,21 +7,29 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="style.css">
-    <script src="main.js" defer></script></head>
+    <script src="https://kit.fontawesome.com/2669728959.js" crossorigin="anonymous" defer></script>
+    <script src="app.js" defer></script>
+</head>
 <body>
-    <div class="player1_form">
-        <label for="player1">Player 1 :</label>
-        <input type="text" name="player1" id="player1">
-        <label for="ai">AI?</label>
-        <input type="checkbox" name="ai" id="ai">
+    <div class="player-container">
+        <input type="radio" name="player-toggle" id="one-player">
+        <input type="radio" name="player-toggle" id="two-players" checked>
+        <input type="radio" name="player-toggle" id="two-robots">
+
+        <form action="#" class="player2-form">
+            <label for="player1-username">Player1</label>
+            <input type="text" name="player1-username" id="player1-username" class="username">
+
+            <input type="checkbox" class="checkbox" name="ai-toggle">
+            <label for="ai-toggle" class="ai-toggle" id="player1-toggle">
+                <i class="fa-solid fa-user-large"></i>
+                <i class="fa-solid fa-robot"></i>
+                <div class="ball"></div>
+            </label>
+        </form>
     </div>
-    <div class="player2_form">
-        <label for="player2">Player 2 :</label>
-        <input type="text" name="player2" id="player2">
-        <label for="ai2">AI?</label>
-        <input type="checkbox" name="ai2" id="ai2">
     </div>
-    
-    <div id="gameboard"></div>
+  
+
 </body>
 </html>
