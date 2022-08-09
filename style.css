@@ -13,10 +13,11 @@
     background-color: azure;
 }
 
-.r2{
-    background-color: azure;
+.r1, .r2{
+    border-bottom: 3px solid black;
 }
 
-.c1{
-    background-color: black;
+.c1, .c2{
+    border-right: 3px solid black;;
 }
+
