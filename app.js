@@ -1,4 +1,41 @@
+// player factory
+// >name, robot boolean, character [X,O]
+const playerFactory = (username) => {
+    //person-wrapper
+    //input field
+    
+    
+    username;
+    console.log('player factory used');
+    
+    return {
+        createWrapper() {
+            let playerWrapper = document.createElement('div')
+            console.log('div created');
+            
+            document.body.appendChild(playerWrapper)
+            playerWrapper.classList.add('player-wrapper')
+
+            let playerUsername = document.createElement('input')
+            playerWrapper.appendChild(playerUsername)
+        }
+    }
+}
+
+
 const displayController = (() => {
+    //game modes - create 2 players, one player / one robot , 2 robots
+    if (document.getElementById('two-player').checked) {
+        console.log('two players baby!'); 
+        const player1 = playerFactory();
+        const player2 = playerFactory();
+        console.log(player1);
+        console.log(player1);
+        player1.createWrapper()
+        
+    }
+    
+
     //adding #game-container > .game-board to the body
     const gameContainer = document.createElement('div')
     gameContainer.setAttribute('id', 'game-container')
@@ -108,13 +145,14 @@ const game = (() => {
             if (square.textContent == ''){
                 //checkPlayerTurn()
                 square.textContent = currentPlayerCharacter
-                square.style.backgroundColor = 'blue'      
+                // square.style.backgroundColor = 'blue'      
                 // save the current selection to the person who selected it          
                 logState(square.id)
                 // if more than 2 squares were chosen by one player, start checking if someone won
                 checkWinner()
                 // move onto next player
                 changePlayer()
+                //if the second player is a robot play
 
             } else {
                 shake()
@@ -126,20 +164,7 @@ const game = (() => {
 })();
     
 
-// player factory
-// >name, robot boolean, character [X,O]
-const playerFactory = (username, playerToggle) => {
-    gameType = document.getElementById('playerToggle')
-    playerToggle = gameType.value
-    console.log(playerToggle);
-    
-    username;
 
-
-    // gameType.addEventListener('change', () => {
-    //     if gameType == 
-    // })
-}
 
 
 
