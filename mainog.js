@@ -5,7 +5,7 @@ const Gameboard = (() => {
     // t = top, m = mid, b = bottom, l = left, c = center, r = right
     let board = ['tl', 'tc', 'tr',
                  'ml', 'mc', 'mr',
-                 'bl', 'bc', 'br']
+                 'bl', 'bc', 'br', 'sd']
 
     board.forEach(e => {
         let gameSquare = document.createElement('div')

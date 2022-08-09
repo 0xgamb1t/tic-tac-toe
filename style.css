@@ -1,14 +1,22 @@
-.game-container {
+.game-board {
     display: grid;
-}
-
-.board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    width: 140px;
+    height: 140px;
     grid-template-rows: repeat(3, 1fr);
 }
 
-.square {
-    background-color: aqua;
-    justify-items: center;
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.alive{
+    background-color: azure;
+}
+
+.r2{
+    background-color: azure;
+}
+
+.c1{
+    background-color: black;
 }
