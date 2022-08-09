@@ -17,7 +17,7 @@ const displayController = (() => {
             ];
 
     //creating a board with the amount of rows in the board array
-    //needs to be a better way for this
+    //needs to be a better way for this variable
     let squareCounter = 1
 
     board.forEach((row, index) => {
@@ -29,41 +29,23 @@ const displayController = (() => {
         row.forEach((tile, index) => {
             tile = document.createElement('div')
             boardRow.appendChild(tile)
-            //column number
+            //column number + unique id per tile
             tile.classList.add(`tile`, `c${index + 1}`)
             tile.setAttribute('id', `t${squareCounter}`)
             squareCounter = squareCounter + 1;
-            
-            
-            
-            
-
-        //what needs to be used to determine the next move? 
-        //find out how to add emoji here
-        
-
         });
     });
 
-    
-
-    //populate squares
-    // board.forEach(e => {
-    //     const gameSquare = document.createElement('div')
-    //     gameSquare.classList.add(`square`, e)
-    //     gameBoard.appendChild(gameSquare)
-    // });
-        
-    //depending on player selection several things are required 
-    //2 players > require usernames
-    //1 player > require username
+    //if twoplayer is selected create to username:input fields 
+    //if human and
 })();
 
 
 const game = (() => {
     const gameSquare = document.querySelectorAll('.tile')
 
-    currentPlayerCharacter = 'X'
+    // based on personFactory player turn
+    let currentPlayerCharacter = 'X'
     
 
     //can be a ternary operator
@@ -88,7 +70,10 @@ const game = (() => {
             [t1, t5, t9],
             [t3, t5, t7]
 
-        if (playerOneTiles.length < 2  || playerTwoTiles.length < 2) {
+        if (playerOneTiles.length > 2  || playerTwoTiles.length > 2) {
+            console.log('someone could have won by now');
+            //see if someone won
+
             //if the permutations of the player tiles makes up a winning combination declare a winner
             //if all 9 tiles have been used and no winner is found there is a tie
         }
@@ -110,24 +95,25 @@ const game = (() => {
         }
     }
 
+    function shake () {
+        console.log('board shakes!')
+    }
+
     //what happens when clicked
     gameSquare.forEach(square => {
         square.addEventListener('click', () => {
-            console.log(square);
-            
-            //when clicked do the following:
-            //1)check if the square is free
-            //if free > apply current player mark
-            //if not free > shake
-            //2)see who's turn it is : probably move to 1
-            //place the mark of whoevers turn it is
+            console.log(`you have just clicked square ${square.id}`);
 
+            //if square is empty apply current player mark
             if (square.textContent == ''){
                 //checkPlayerTurn()
                 square.textContent = currentPlayerCharacter
-                square.style.backgroundColor = 'blue'                
+                square.style.backgroundColor = 'blue'      
+                // save the current selection to the person who selected it          
                 logState(square.id)
+                // if more than 2 squares were chosen by one player, start checking if someone won
                 checkWinner()
+                // move onto next player
                 changePlayer()
 
             } else {
@@ -145,9 +131,16 @@ const game = (() => {
 const playerFactory = (username, playerToggle) => {
     gameType = document.getElementById('playerToggle')
     playerToggle = gameType.value
+    console.log(playerToggle);
     
     username;
+
+
+    // gameType.addEventListener('change', () => {
+    //     if gameType == 
+    // })
 }
+
 
 
 
