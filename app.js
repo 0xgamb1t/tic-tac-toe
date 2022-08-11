@@ -1,37 +1,66 @@
 // player factory
 // >name, robot boolean, character [X,O]
-const playerFactory = (username) => {
+const playerFactory = (name) => {
     //person-wrapper
     //input field
+    //takes two inputs in a list and creates wrappers
     
-    
-    username;
     console.log('player factory used');
-    
-    return {
-        createWrapper() {
+
+    //can use a single return function and forget about 'object'
+    //trouble excecuting multiple functions in this factory
+       
+    const createWrapper = () => {
             let playerWrapper = document.createElement('div')
             console.log('div created');
             
             document.body.appendChild(playerWrapper)
             playerWrapper.classList.add('player-wrapper')
 
+            let playerLabel = document.createElement('label')
+            playerWrapper.appendChild(playerLabel)
+            playerLabel.setAttribute('for', `${name}`)
+            playerLabel.textContent = 'Username: '
+
             let playerUsername = document.createElement('input')
             playerWrapper.appendChild(playerUsername)
+            //create setAttribute helper
+            playerUsername.setAttribute('name',`${name}`)
+            playerUsername.setAttribute('type',`text`)
+            playerUsername.setAttribute('id',`${name}`) // make the index of the game mode the number after person or robot
+            playerUsername.setAttribute('placeholder',`${name}`)
+            
+            console.log(`hello i am ${name}`);   
+
         }
+    
+
+    const speak = () => {
+        console.log('hi');
     }
+
+    //multiple return functions are not allowed as it ends the program lol...
+    return {createWrapper, speak}  
 }
 
 
 const displayController = (() => {
     //game modes - create 2 players, one player / one robot , 2 robots
+    // gameOption1 = [human,human]
+    // gameOption2 = [human,robot]
+    // gameOption3 = [robot,robot]
+
     if (document.getElementById('two-player').checked) {
+
         console.log('two players baby!'); 
-        const player1 = playerFactory();
-        const player2 = playerFactory();
-        console.log(player1);
-        console.log(player1);
+        const player1 = playerFactory('gambino');
+        const player2 = playerFactory('gambino2');
+        console.log(player1.name);
+        console.log(player2);
         player1.createWrapper()
+        player2.createWrapper()
+
+        
         
     }
     
@@ -86,6 +115,7 @@ const game = (() => {
     
 
     //can be a ternary operator
+    //change character to player > mark
     function changePlayer() {
         if (currentPlayerCharacter == 'X'){
             currentPlayerCharacter = 'O'
