@@ -50,8 +50,12 @@ const displayController = (() => {
     // gameOption2 = [human,robot]
     // gameOption3 = [robot,robot]
 
+    //take the mode and run it through the factory
+    
     if (document.getElementById('two-player').checked) {
 
+
+        //
         console.log('two players baby!'); 
         const player1 = playerFactory('gambino');
         const player2 = playerFactory('gambino2');

@@ -8,21 +8,21 @@
 
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/2669728959.js" crossorigin="anonymous" defer></script>
-    <script src="app.js" defer></script>
+    <script src="experimenting.js" defer></script>
 </head>
 <body>
-    <div class="game-selector">
-        <input type="radio" name="game-mode" id="two-player" value="two-player" checked>
+    <div id="game-selector">
+        <input type="radio" name="game-type" class="game-type" id="two-player" value=['human','human'] >
         <i class="fa-solid fa-user-large"></i>
         <i class="fa-solid fa-user-large"></i>
 
 
-        <input type="radio" name="game-mode" id="one-players" value="one-player">
+        <input type="radio" name="game-type" class="game-type" id="one-player" value=['human','robot'] checked>
         <i class="fa-solid fa-user-large"></i>
         <i class="fa-solid fa-robot"></i>
 
 
-        <input type="radio" name="game-mode" id="two-robots">
+        <input type="radio" name="game-type" class="game-type" id="two-robots" value=['robot','robot']>
         <i class="fa-solid fa-robot"></i>
         <i class="fa-solid fa-robot"></i>
     </div>
