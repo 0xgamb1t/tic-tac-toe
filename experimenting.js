@@ -1,5 +1,6 @@
 // player factory
 // >name, robot boolean, character [X,O]
+
 let meatVmeat = [human, human]
 let meatVMetal = [human, robot]
 let metalVmetal = [robot, robot]
@@ -7,22 +8,57 @@ let metalVmetal = [robot, robot]
 
 
 const playerFactory = ([gameType]) => {
-    gameType.forEach(e => {
+    gameType.forEach((e,v) => {
         if (e == human) {
             //create a human ui
+            //condense this code
             let playerWrapper = document.createElement('div')
-            console.log('div created');
-            
             document.body.appendChild(playerWrapper)
-            playerWrapper.classList.add('player-wrapper')
+            playerWrapper.classList.add('player-wrapper', `player${v}-wrapper`)
 
             let playerLabel = document.createElement('label')
             playerWrapper.appendChild(playerLabel)
             playerLabel.setAttribute('for', `${e}`)
             playerLabel.textContent = 'Username: '
+            
             //apply the index of the list
+
+            let playerInput = document.createElement('input')
+            playerWrapper.appendChild(playerInput)
+            playerInput.classList.add('playerInput')
+            playerInput.setAttribute('id', `playerInput${v}`)
+
+            playerInput.setAttribute('name',`player${v}`)
+            playerInput.setAttribute('type',`text`)
+            playerInput.setAttribute('placeholder',`player${v}`)
+
+            //give it an array to record selections
+
         } else {
             //create robot ui and later robot intelligence levels
+            //condense this code
+
+            let robotWrapper = document.createElement('div')
+            document.body.appendChild(robotWrapper)
+            robotWrapper.classList.add('robot-wrapper', `robot${v}-wrapper`)
+
+            let playerLabel = document.createElement('label')
+            playerWrapper.appendChild(playerLabel)
+            playerLabel.setAttribute('for', `${e}`)
+            playerLabel.textContent = 'RoboName: '
+            
+
+            let robotInput = document.createElement('input')
+            playerWrapper.appendChild(robotInput)
+            robotInput.classList.add('robotInput')
+            robotInput.setAttribute('id', `robotInput${v}`)
+
+            robotInput.setAttribute('name',`robot${v}`)
+            robotInput.setAttribute('type',`text`)
+            robotInput.setAttribute('placeholder',`robot${v}`)
+            //give it an array to record selections
+
+
         }
     }
 });
