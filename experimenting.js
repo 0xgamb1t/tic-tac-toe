@@ -8,7 +8,39 @@ let metalVMetal = ['robot', 'robot']
 // a factory that accepts two players in a list
 function playerFactory(players) {
     players.forEach((e,v) => {
+        //if they are human create an human object
+        if (e == 'human'){
+
+        }
+
+        //otherwise create a robot object
+
+        userName = `${e}${v}`;
+        userTiles = [];
+        
+
+        //first player has the first turn
+        isTurn = Boolean;
+
+        
+
+        //this seems like how i should have done it to start imco.
         if (e == 'human') {
+            let humanObject = {
+                userName,
+                userTiles : [],
+                userMark,
+                isTurn : ((v == 0) ? true : false), // player 0 always goes first for simplicity xD
+                //make a function that adds a tile to this users collection
+                addTiles() {},
+                //create a function that changes the username when writing make it look like you edit the page on the fly?
+                changeUsername() {},
+                //create a function to congratulate winner?
+
+            }
+            //add to the tiles
+            
+
             //create a human ui
             //condense this code
             let playerWrapper = document.createElement('div');
@@ -56,6 +88,10 @@ function playerFactory(players) {
 
         }
     });
+    console.log(userName);
+    return userName;
+    
+    
 }
 
 // playerFactory(meatVMeat)
@@ -80,16 +116,12 @@ const displayController = (() => {
     gameType.forEach(e => {
         if (e.checked == true) {
             console.log(e.value);
-            x = e.value
-            console.log(x);
-            console.log(x === ['human','human']);
+            console.log(['human','human']);
+            console.log(e.value == ['human','human']);
             playerFactory(['human','human'])
             //playerFactory[e.value] should work? maybe it's a node list
         }
     });
-
-    console.log(meatVMeat);
-    playerFactory(meatVMeat);
     
 
     //work on radio button change
