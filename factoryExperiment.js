@@ -1,14 +1,5 @@
-// player factory
-// >name, robot boolean, character [X,O]
-
-let meatVMeat = ['human', 'human']
-let meatVMetal = ['human', 'robot']
-let metalVMetal = ['robot', 'robot']
-
-
-
 // a factory that accepts two players in a list
-// returns a list of objects
+// returns a list of new player objects
 function playerFactory(players) {
     let player1;
     let player2;
@@ -40,32 +31,82 @@ function playerFactory(players) {
 
     //returns an objects of the 2 objects that will be playing , javascript can't return multiple variables at a time
     // players = {'player1' : player1, 'player2' : player2}
-
     players = [player1, player2]
     return players
 }
 
 
 const displayController = (() => {
+    //updates all ui based on game type
+    //updates username when filled in
     //every time the gametype button is changed the player list needs to update
+    //manage game type selection
     let gameType;
+    let playerList;
 
     const gameTypeBtns = document.querySelectorAll('.game-type')
     
+    const newGameType = (() => {
+            gameTypeBtns.forEach(e => {
+            if (e.checked == true) {
+                return gameType = e.value
+            } else {}
+        });
+    })();
+    
+    const newPlayerList = (() => {
+        playerList = gameType.split(' ')
+    })();
+    
+
+    
+    //every time the game type is changed i spit out a new game type to be used in the Ui
     gameTypeBtns.forEach(e => {
-        if (e.checked == true) {
-            return gameType = e.value
-        } else {}
-    });
+        //reset Ui
+        e.addEventListener('change', () => {
+                        newGameType()
+                        newPlayerList()
+                        //newplayerUi
+                        //newBoardUi
+                        })
+        //reset player list every time the button is changed
+        
+        //rerun Ui
+    }); 
+
 
     console.log(gameType.__proto__);
-    playerList = gameType.split(' ')
-    //convert the string to the two players and create those unique objects
-    console.log(playerList);
     
-    playerFactory(playerList)
+    //convert the string to the two players and create those unique objects
 
+    
+const newPlayerUi =(() => {
+    //add players ui
+    playerList.forEach(e => {
+        let playerWrapper = document.createElement('div')
+        document.body.appendChild(playerWrapper)
+        playerWrapper.classList.add('player-wrapper')
+        //create human ui
+        //label + input box + user input
+        let playerLabel = document.createElement('label')
+        playerWrapper.appendChild(playerLabel)
+        playerLabel.setAttribute('for', `${e.playerName}`)
+        playerLabel.textContent = 'Username: '
 
+        let playerUsername = document.createElement('input')
+        playerWrapper.appendChild(playerUsername)
+        //create setAttribute helper
+        playerUsername.setAttribute('name',`${e.playerName}`)
+        playerUsername.setAttribute('type',`text`)
+        playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
+        playerUsername.setAttribute('placeholder',`${e.playerName}`)
+        //create robot ui
+    });
+})();
+    
+    //run board code together
+function buildBoardUi() {
+    //delete previous board substitute a new one
     //adding #game-container > .game-board to the body
     const gameContainer = document.createElement('div')
     gameContainer.setAttribute('id', 'game-container')
@@ -105,6 +146,7 @@ const displayController = (() => {
 
     //if twoplayer is selected create to username:input fields 
     //if human and
+}buildBoardUi()
 })();
 
 
@@ -184,10 +226,10 @@ const game = (() => {
 })();
     
 
-players = playerFactory(meatVMeat)
-player1 = players[0]
-player2= players[1]
-console.log(player1);
+// players = playerFactory(meatVMeat)
+// player1 = players[0]
+// player2= players[1]
+// console.log(player1);
 
 
 
