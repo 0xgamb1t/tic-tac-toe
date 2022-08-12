@@ -27,15 +27,20 @@ function playerFactory(players) {
         //this seems like how i should have done it to start imco.
         if (e == 'human') {
             let humanObject = {
-                userName,
+                userName : `${e.v}`,
                 userTiles : [],
                 userMark,
                 isTurn : ((v == 0) ? true : false), // player 0 always goes first for simplicity xD
                 //make a function that adds a tile to this users collection
-                addTiles() {},
+                addTiles(tile) {
+                    if ((this.isTurn))
+                },
                 //create a function that changes the username when writing make it look like you edit the page on the fly?
                 changeUsername() {},
                 //create a function to congratulate winner?
+                winner() {},
+                //change turn
+                changeTurn() {}
 
             }
             //add to the tiles
