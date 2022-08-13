@@ -1,10 +1,10 @@
 // a factory that accepts two players in a list
 // returns a list of new player objects
-function playerFactory(players) {
+function playerFactory(gameTypeList) {
     let player1;
     let player2;
 
-    players.forEach((e,v) => {
+    gameTypeList.forEach((e,v) => {
         //this seems like how i should have done it to start imco.
         //if human create a human object > else robot
         const playerObject = {
@@ -43,44 +43,52 @@ const displayController = (() => {
     //manage game type selection
     let gameType;
     let playerList;
-
+    
     const gameTypeBtns = document.querySelectorAll('.game-type')
     
-    const newGameType = (() => {
+    function newGameType() {
             gameTypeBtns.forEach(e => {
-            if (e.checked == true) {
-                return gameType = e.value
-            } else {}
-        });
-    })();
+                if (e.checked == true) {
+                    gameType = e.value.split(' ')
+                    return gameType
+                } else{}
+            });
+    }newGameType();
     
-    const newPlayerList = (() => {
-        playerList = gameType.split(' ')
-    })();
+    // has to be a way to do it similar to this to have recursion 
+    // const newPlayerList = (() => {
+    //     playerList = playerFactory(gameType)
+    // })();
+
+    function newPlayerList() {
+        playerList = playerFactory(gameType)
+    } newPlayerList()
+
+    console.log(gameType);
+    console.log(playerList);
     
 
     
-    //every time the game type is changed i spit out a new game type to be used in the Ui
+
+    // every time the game type is changed i spit out a new game type to be used in the Ui
     gameTypeBtns.forEach(e => {
         //reset Ui
         e.addEventListener('change', () => {
-                        newGameType()
-                        newPlayerList()
-                        //newplayerUi
-                        //newBoardUi
+                        console.log('changed');
+                        runNewGame();
                         })
         //reset player list every time the button is changed
         
-        //rerun Ui
+    //     //rerun Ui
     }); 
 
 
-    console.log(gameType.__proto__);
+ console.log(gameType.__proto__);
     
     //convert the string to the two players and create those unique objects
 
     
-const newPlayerUi =(() => {
+function newPlayerUi() {
     //add players ui
     playerList.forEach(e => {
         let playerWrapper = document.createElement('div')
@@ -102,10 +110,10 @@ const newPlayerUi =(() => {
         playerUsername.setAttribute('placeholder',`${e.playerName}`)
         //create robot ui
     });
-})();
+} newPlayerUi() //has to be a way to use es6 to not have this code i think
     
     //run board code together
-function buildBoardUi() {
+function newBoardUi() {
     //delete previous board substitute a new one
     //adding #game-container > .game-board to the body
     const gameContainer = document.createElement('div')
@@ -146,7 +154,18 @@ function buildBoardUi() {
 
     //if twoplayer is selected create to username:input fields 
     //if human and
-}buildBoardUi()
+}newBoardUi();
+    function runNewGame() {
+        //delete old
+        //create new!
+        newGameType();
+        newPlayerList();
+        newPlayerUi();
+        newBoardUi();
+        console.log('game started!');
+}
+
+
 })();
 
 
