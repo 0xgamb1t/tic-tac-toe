@@ -37,20 +37,25 @@ function playerFactory(gameTypeList) {
 
 
 const displayController = (() => {
-    //updates all ui based on game type
+    //reset when clicking the toggle or reset button
+    //creates a gameType & playerList
     //updates username when filled in
-    //every time the gametype button is changed the player list needs to update
+    //every time the gametype button is clicked, reset with new 4 things
     //manage game type selection
-    let gameType;
     let playerList;
     
+
     const gameTypeBtns = document.querySelectorAll('.game-type')
     
+    function newGame() {}
+
+
     function newGameType() {
             gameTypeBtns.forEach(e => {
                 if (e.checked == true) {
                     gameType = e.value.split(' ')
-                    return gameType
+                    playerList = playerFactory(gameType)
+                    return playerList
                 } else{}
             });
     }newGameType();
@@ -60,9 +65,9 @@ const displayController = (() => {
     //     playerList = playerFactory(gameType)
     // })();
 
-    function newPlayerList() {
-        playerList = playerFactory(gameType)
-    } newPlayerList()
+    // function newPlayerList() {
+    //     playerList = playerFactory(gameType)
+    // } newPlayerList()
 
     console.log(gameType);
     console.log(playerList);
@@ -75,7 +80,7 @@ const displayController = (() => {
         //reset Ui
         e.addEventListener('change', () => {
                         console.log('changed');
-                        runNewGame();
+                        runNewGameUi();
                         })
         //reset player list every time the button is changed
         
@@ -83,93 +88,95 @@ const displayController = (() => {
     }); 
 
 
- console.log(gameType.__proto__);
+    console.log(gameType.__proto__);
     
     //convert the string to the two players and create those unique objects
 
     
-function newPlayerUi() {
-    //add players ui
-    playerList.forEach(e => {
-        let playerWrapper = document.createElement('div')
-        document.body.appendChild(playerWrapper)
-        playerWrapper.classList.add('player-wrapper')
-        //create human ui
-        //label + input box + user input
-        let playerLabel = document.createElement('label')
-        playerWrapper.appendChild(playerLabel)
-        playerLabel.setAttribute('for', `${e.playerName}`)
-        playerLabel.textContent = 'Username: '
+    function newPlayerUi() {
+        //add players ui
+        playerList.forEach(e => {
+            let playerWrapper = document.createElement('div')
+            document.body.appendChild(playerWrapper)
+            playerWrapper.classList.add('player-wrapper')
+            //create human ui
+            //label + input box + user input
+            let playerLabel = document.createElement('label')
+            playerWrapper.appendChild(playerLabel)
+            playerLabel.setAttribute('for', `${e.playerName}`)
+            playerLabel.textContent = 'Username: '
 
-        let playerUsername = document.createElement('input')
-        playerWrapper.appendChild(playerUsername)
-        //create setAttribute helper
-        playerUsername.setAttribute('name',`${e.playerName}`)
-        playerUsername.setAttribute('type',`text`)
-        playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
-        playerUsername.setAttribute('placeholder',`${e.playerName}`)
-        //create robot ui
-    });
-} newPlayerUi() //has to be a way to use es6 to not have this code i think
+            let playerUsername = document.createElement('input')
+            playerWrapper.appendChild(playerUsername)
+            //create setAttribute helper
+            playerUsername.setAttribute('name',`${e.playerName}`)
+            playerUsername.setAttribute('type',`text`)
+            playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
+            playerUsername.setAttribute('placeholder',`${e.playerName}`)
+            //create robot ui
+        });
+    } newPlayerUi() //has to be a way to use es6 to not have this code i think
     
     //run board code together
-function newBoardUi() {
-    //delete previous board substitute a new one
-    //adding #game-container > .game-board to the body
-    const gameContainer = document.createElement('div')
-    gameContainer.setAttribute('id', 'game-container')
-    document.body.appendChild(gameContainer)
+    function newBoardUi() {
+        //delete previous board substitute a new one
+        //adding #game-container > .game-board to the body
+        const gameContainer = document.createElement('div')
+        gameContainer.setAttribute('id', 'game-container')
+        document.body.appendChild(gameContainer)
 
-    const gameBoard = document.createElement('div')
-    gameBoard.classList.add('game-board')
-    gameContainer.appendChild(gameBoard)
+        const gameBoard = document.createElement('div')
+        gameBoard.classList.add('game-board')
+        gameContainer.appendChild(gameBoard)
 
+        //creating board components
+        let board =  [           
+                    ['', '', ''],    
+                    ['', '', ''],
+                    ['', '', '']
+                ];
 
-    //creating board components
-    let board =  [           
-                ['', '', ''],    
-                ['', '', ''],
-                ['', '', '']
-            ];
+        //creating a board with the amount of rows in the board array
+        //needs to be a better way for this variable
+        let squareCounter = 1
 
-    //creating a board with the amount of rows in the board array
-    //needs to be a better way for this variable
-    let squareCounter = 1
-
-    board.forEach((row, index) => {
-        const boardRow = document.createElement('div')
-        boardRow.classList.add('row', `r${index + 1}`)
-        gameBoard.appendChild(boardRow)
-        //creating tiles with column indexes for css
-        //Theory: it'll be much simpler to style the lines in css
-        row.forEach((tile, index) => {
-            tile = document.createElement('div')
-            boardRow.appendChild(tile)
-            //column number + unique id per tile
-            tile.classList.add(`tile`, `c${index + 1}`)
-            tile.setAttribute('id', `t${squareCounter}`)
-            squareCounter = squareCounter + 1;
+        board.forEach((row, index) => {
+            const boardRow = document.createElement('div')
+            boardRow.classList.add('row', `r${index + 1}`)
+            gameBoard.appendChild(boardRow)
+            //creating tiles with column indexes for css
+            //Theory: it'll be much simpler to style the lines in css
+            row.forEach((tile, index) => {
+                tile = document.createElement('div')
+                boardRow.appendChild(tile)
+                //column number + unique id per tile
+                tile.classList.add(`tile`, `c${index + 1}`)
+                tile.setAttribute('id', `t${squareCounter}`)
+                console.log(index);
+                
+                squareCounter = squareCounter + 1;
+            });
         });
-    });
-
+    }newBoardUi();
     //if twoplayer is selected create to username:input fields 
     //if human and
-}newBoardUi();
-    function runNewGame() {
+    
+    function runNewGameUi() {
         //delete old
+        //deleteUi();
         //create new!
         newGameType();
         newPlayerList();
         newPlayerUi();
         newBoardUi();
         console.log('game started!');
-}
-
-
+        }
 })();
 
 
-const game = (() => {
+const createGame = (() => {
+    //createGame
+    //
     const gameSquare = document.querySelectorAll('.tile')
 
     winningCombinations = [
