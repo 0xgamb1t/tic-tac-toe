@@ -44,61 +44,51 @@ const displayController = (() => {
     //manage game type selection
     let playerList;
     
-
     const gameTypeBtns = document.querySelectorAll('.game-type')
-    
-    function newGame() {}
+    const resetBtn = document.querySelector('.reset-button')
 
+    const openMic = (() => {
+        //listen to see if
+        //1. game type is changed
+        //2. reset button is clicked
+        //3. a name has been input
+        gameTypeBtns.forEach(e => {
+            //reset Ui
+            e.addEventListener('change', () => {
+                            console.log('game mode changed');
+                            runNewGameUi();
+            })
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            console.log('game reset');
+            runNewGameUi();
+        })
+    })();
 
-    function newGameType() {
+    function getGameType() {
             gameTypeBtns.forEach(e => {
                 if (e.checked == true) {
                     gameType = e.value.split(' ')
                     playerList = playerFactory(gameType)
+                    console.log(playerList);
                     return playerList
                 } else{}
             });
-    }newGameType();
-    
-    // has to be a way to do it similar to this to have recursion 
-    // const newPlayerList = (() => {
-    //     playerList = playerFactory(gameType)
-    // })();
+    }getGameType();
 
-    // function newPlayerList() {
-    //     playerList = playerFactory(gameType)
-    // } newPlayerList()
-
-    console.log(gameType);
-    console.log(playerList);
-    
-
-    
-
-    // every time the game type is changed i spit out a new game type to be used in the Ui
-    gameTypeBtns.forEach(e => {
-        //reset Ui
-        e.addEventListener('change', () => {
-                        console.log('changed');
-                        runNewGameUi();
-                        })
-        //reset player list every time the button is changed
-        
-    //     //rerun Ui
-    }); 
-
-
-    console.log(gameType.__proto__);
-    
     //convert the string to the two players and create those unique objects
-
-    
     function newPlayerUi() {
-        //add players ui
+        //remove all ui with a 'removable' class
+        document.querySelectorAll('.removable').forEach(e => {
+            e.remove()
+        });
+        
+        //adds new ui
         playerList.forEach(e => {
             let playerWrapper = document.createElement('div')
             document.body.appendChild(playerWrapper)
-            playerWrapper.classList.add('player-wrapper')
+            playerWrapper.classList.add('player-wrapper', 'removable')
             //create human ui
             //label + input box + user input
             let playerLabel = document.createElement('label')
@@ -122,7 +112,7 @@ const displayController = (() => {
         //delete previous board substitute a new one
         //adding #game-container > .game-board to the body
         const gameContainer = document.createElement('div')
-        gameContainer.setAttribute('id', 'game-container')
+        gameContainer.classList.add('game-container', 'removable')
         document.body.appendChild(gameContainer)
 
         const gameBoard = document.createElement('div')
@@ -152,9 +142,8 @@ const displayController = (() => {
                 //column number + unique id per tile
                 tile.classList.add(`tile`, `c${index + 1}`)
                 tile.setAttribute('id', `t${squareCounter}`)
-                console.log(index);
                 
-                squareCounter = squareCounter + 1;
+                squareCounter += 1;
             });
         });
     }newBoardUi();
@@ -165,11 +154,10 @@ const displayController = (() => {
         //delete old
         //deleteUi();
         //create new!
-        newGameType();
-        newPlayerList();
+        getGameType();
         newPlayerUi();
         newBoardUi();
-        console.log('game started!');
+        console.log('new game started!');
         }
 })();
 
