@@ -16,112 +16,88 @@ const checkGameType = (() => {
 
     //find current player list
     function createCurrentPlayerList() { //module function
+        console.log('creating current player list');
+        
         gameTypeBtns.forEach(e => { //block function for getPlayer
             if (e.checked) {
                 let playerList = e.value.split(' ')
-                let player1 = playerList[0]
-                let player2 = playerList[1]
-                currentPlayerList.push(player1)
-                currentPlayerList.push(player2)
-            } else {}
+                currentPlayerList = []
+                currentPlayerList.push(playerList[0], playerList[1])
+            }
         });
-    }; createCurrentPlayerList()
+    };
 
 
     function Player () {
-        this.player    =   `player${v+1}`,
-        this.username  =   e,
-        this.tilebag   =   [],
-        this.isTurn    =   ((v == 0)? true: false)
+        //this.player    =   `player${v+1}`,
+        //this.username  =   e,
+        this.tilebag   =   []
+        //this.isTurn    =   ((v == 0)? true: false)
     }
 
     function createPlayers () {
+        //create differences for humans and robots
+        playerObjects = []
+        
         currentPlayerList.forEach((e, v) => {
+            //create a player
+            class Player {
+                player    =   `player${v+1}`
+                type      =   e
+                tilebag   =   []
+                isTurn    =   ((v == 0)? true: false)
+                isHuman   =   ((e == 'human')? true: false)
+  
+                changeTurn() {}  
+                addTileToBag() {}
+            }
+
+            class Human extends Player {
+                isHuman = true
+            }
+
+            class Robot extends Player {
+                isHuman = false
+            }
+
             if(e == 'human') {
-                const newHuman = new Player()
-
-                //save this to player 1 or 2
-                const savePlayer = (v==0? [player1 = newHuman : player2])
-            } else {
-                const newRobot = new Player()
-                const savePlayer = (v==0? [player1 = newHuman : player2])
-            }
-        });
-    }
-    currentPlayerList.forEach((e,v) => {
-        //if human add player class then human class
-        //coudnt use arrow function here because then i couldnt assign this object. fixed issue with assignment...
-        
-        
-        console.log(player.__proto__)
-        console.log('object created')
-        playerObjects.push(player)
-        console.log(playerObjects);
-    });
-    return playerObjects
-
-
-
-    function createHumanObjects(){
-        console.log(playerObjects);
-        playerObjects.forEach(e => {
-            if (e.type == 'human') {
-                //add human properties
-                console.log(`I'm human, please give me human properties`)
-                e.humanUi = function() {console.log('hi')};
-                e.humanUi()
-            } else {
-                //add robot properties
-            }
-        });
-    }createHumanObjects()
-
-    function createRobotObjects(){
-
-    }
-
-    // function listToPlayerObjects() {
-    //     //factory that takes in a player list and makes a list of two unique objects
-    //         currentPlayerList.forEach((e,v) => {
-    //             //this seems like how i should have done it to start imco.
-    //             //if human create a human object > else robot
-    //             const playerFactory = e = {
-    //                 playerName : `player${v}`,
-    //                 playerType : ((e == 'human' ? 'human' : 'robot')),
-    //                 tileBag : [],
-    //                 userMark : ((v == 0 ? 'X' : '0')),
-    //                 isTurn : ((v == 0) ? true : false), // player 0 [on the left] always goes first for simplicity xD
-    //                 placeTiles() {},
-    //                 addTilesToBag(tile) {
-    //                     this.tileBag.push(tile)
-    //                     console.log(this.tileBag)
-    //                 },
-    //                 changeUsername() {},
-    //                 changeTurn() {
-    //                     e.isTurn = !(e.isTurn);
-    //                     console.log('turnChanged');
-                        
-    //                 }  
-    //             } 
-    //             //saving the object to one of the two variables
-    //             // v == 0? player1 = playerObject: player2 = playerObject;
-    //             currentPlayerObjs.push(playerFactory)
-    //             // console.log(playerFactory);
+                const newHuman = new Human()
+                playerObjects.push(newHuman)
+                //if (v==0) {player1 = newHuman}else{player2 = newHuman} //save this to player 1 or 2
+                console.log(`player ${v + 1} is human`);
                 
-    //         })
-            
-    //     };listToPlayerObjects()
+            } else {
+                const newRobot = new Robot()
+                playerObjects.push(newRobot)
+                //if (v==0) {player1 = newRobot}else{ player2 = newRobot}
+                console.log(`player ${v + 1} is a robot`);
+            }
+        });        
+    }
+
+    function freshGame() {
+        console.log('Fresh game initiated!');
+        createCurrentPlayerList()
+        createPlayers()
+        console.log('new players have landed')
+        
+        console.log(playerObjects);
+        return currentPlayerObjs
+    }freshGame()
+
 
     
-    //if you reset of toggle .getPlayers
-    return currentPlayerObjs
+    listeners = (() => {
     
+        gameTypeBtns.forEach(e => {
+            e.addEventListener('click', () => {freshGame()})
+        }); 
+
+        resetBtn.addEventListener('click', () => {freshGame()})
+    })();   
+
 })();
 
-resetBtn.addEventListener('click', () => {
-    checkGameType;
-    console.log('reset');
-})
 
 // //gets the player list of obejcts from the get players function.
 // const displayController = (() => {
