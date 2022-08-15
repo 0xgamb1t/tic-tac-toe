@@ -1,0 +1,218 @@
+// a factory that accepts two players in a list
+// returns a list of new player objects
+const gameTypeBtns = document.querySelectorAll('.game-type')
+const resetBtn = document.querySelector('.reset-button')
+const currentPlayerObjs = []
+
+
+
+//module that checks what game-type is checked and creates a player list off that : can it just make the two
+const checkGameType = (() => {
+    console.log('checkingGameType');
+    let currentPlayerList = []
+    let playerObjects = []
+    let player1;
+    let player2;
+
+    //find current player list
+    function createCurrentPlayerList() { //module function
+        gameTypeBtns.forEach(e => { //block function for getPlayer
+            if (e.checked) {
+                let playerList = e.value.split(' ')
+                let player1 = playerList[0]
+                let player2 = playerList[1]
+                currentPlayerList.push(player1)
+                currentPlayerList.push(player2)
+            } else {}
+        });
+    }; createCurrentPlayerList()
+
+
+    function Player () {
+        this.player    =   `player${v+1}`,
+        this.username  =   e,
+        this.tilebag   =   [],
+        this.isTurn    =   ((v == 0)? true: false)
+    }
+
+    function createPlayers () {
+        currentPlayerList.forEach((e, v) => {
+            if(e == 'human') {
+                const newHuman = new Player()
+
+                //save this to player 1 or 2
+                const savePlayer = (v==0? [player1 = newHuman : player2])
+            } else {
+                const newRobot = new Player()
+                const savePlayer = (v==0? [player1 = newHuman : player2])
+            }
+        });
+    }
+    currentPlayerList.forEach((e,v) => {
+        //if human add player class then human class
+        //coudnt use arrow function here because then i couldnt assign this object. fixed issue with assignment...
+        
+        
+        console.log(player.__proto__)
+        console.log('object created')
+        playerObjects.push(player)
+        console.log(playerObjects);
+    });
+    return playerObjects
+
+
+
+    function createHumanObjects(){
+        console.log(playerObjects);
+        playerObjects.forEach(e => {
+            if (e.type == 'human') {
+                //add human properties
+                console.log(`I'm human, please give me human properties`)
+                e.humanUi = function() {console.log('hi')};
+                e.humanUi()
+            } else {
+                //add robot properties
+            }
+        });
+    }createHumanObjects()
+
+    function createRobotObjects(){
+
+    }
+
+    // function listToPlayerObjects() {
+    //     //factory that takes in a player list and makes a list of two unique objects
+    //         currentPlayerList.forEach((e,v) => {
+    //             //this seems like how i should have done it to start imco.
+    //             //if human create a human object > else robot
+    //             const playerFactory = e = {
+    //                 playerName : `player${v}`,
+    //                 playerType : ((e == 'human' ? 'human' : 'robot')),
+    //                 tileBag : [],
+    //                 userMark : ((v == 0 ? 'X' : '0')),
+    //                 isTurn : ((v == 0) ? true : false), // player 0 [on the left] always goes first for simplicity xD
+    //                 placeTiles() {},
+    //                 addTilesToBag(tile) {
+    //                     this.tileBag.push(tile)
+    //                     console.log(this.tileBag)
+    //                 },
+    //                 changeUsername() {},
+    //                 changeTurn() {
+    //                     e.isTurn = !(e.isTurn);
+    //                     console.log('turnChanged');
+                        
+    //                 }  
+    //             } 
+    //             //saving the object to one of the two variables
+    //             // v == 0? player1 = playerObject: player2 = playerObject;
+    //             currentPlayerObjs.push(playerFactory)
+    //             // console.log(playerFactory);
+                
+    //         })
+            
+    //     };listToPlayerObjects()
+
+    
+    //if you reset of toggle .getPlayers
+    return currentPlayerObjs
+    
+})();
+
+resetBtn.addEventListener('click', () => {
+    checkGameType;
+    console.log('reset');
+})
+
+// //gets the player list of obejcts from the get players function.
+// const displayController = (() => {
+//     console.log('displayControllerActive');
+//     let playerList = currentPlayerObjs
+    
+//     //creates new player UIs
+//     function newPlayerUi() {
+//         //remove all ui with a 'removable' class
+//         document.querySelectorAll('.removable').forEach(e => {
+//             e.remove()
+//         });
+        
+//         //adds new ui per item in the playerList
+//         playerList.forEach(e => {
+//             let playerWrapper = document.body.appendChild(document.createElement('div'))
+//             playerWrapper.classList.add('player-wrapper', 'removable')
+
+//             let playerLabel = playerWrapper.appendChild(document.createElement('label'))
+//             playerLabel.setAttribute('for', `${e.playerName}`)
+//             playerLabel.textContent = 'Username: '
+
+//             let playerUsername = playerWrapper.appendChild(document.createElement('input'))
+//             //create setAttribute helper
+//             playerUsername.setAttribute('name',`${e.playerName}`)
+//             playerUsername.setAttribute('type',`text`)
+//             playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
+//             playerUsername.setAttribute('placeholder',`${e.playerName}`)
+//             //create robot ui
+//         });
+//     } newPlayerUi() //has to be a way to use es6 to not have this code i think
+    
+//     //creating board UI
+//     function newBoardUi() {
+//         //delete previous board substitute a new one
+//         //adding #game-container > .game-board to the body
+//         const gameContainer = document.body.appendChild(document.createElement('div'))
+//         gameContainer.classList.add('game-container', 'removable')
+        
+//         const gameBoard = gameContainer.appendChild(document.createElement('div'))
+//         gameBoard.classList.add('game-board')
+        
+//         //creating components | board | rows | tiles
+//         let board =  [           
+//                     ['', '', ''],    
+//                     ['', '', ''],
+//                     ['', '', '']
+//                 ];
+
+//         //fix this 
+//         let squareCounter = 1
+
+//         //creating 9 unique tiles from the board array[array] t1-t9
+//         board.forEach((row, index) => {
+//             const boardRow = gameBoard.appendChild(document.createElement('div'))
+//             boardRow.classList.add('row', `r${index + 1}`)
+//             //Theory: it'll be much simpler to style the lines in css
+//             row.forEach((tile, index) => {
+//                 tile = boardRow.appendChild(document.createElement('div'))
+//                 tile.classList.add(`tile`, `c${index + 1}`)
+//                 tile.setAttribute('id', `t${squareCounter}`)
+//                 squareCounter += 1;
+//             });
+//         });
+//     }newBoardUi();
+//     //creating a node list to be used 
+// })();
+
+// const gameLogic = (() => {
+//     const board = document.querySelectorAll('.tile')
+//     let currentPlayer;
+    
+
+//     let playerList = currentPlayerObjs
+//     player1 = playerList[0]
+//     player2 = playerList[1]
+
+//     console.log(player1.playerType);
+   
+
+
+//     board.forEach(tile => {
+//         tile.addEventListener('click', () => {
+//                 if (tile.textContent == ''){
+//                     //add to player
+//                     console.log(`tile ${tile.id} was clicked`);
+//             }
+//         })
+//     });
+
+//     console.log('gameLogicActive');
+//     console.log(playerList)
+// })();
+

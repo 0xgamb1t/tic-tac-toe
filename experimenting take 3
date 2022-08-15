@@ -1,0 +1,16 @@
+// a factory that accepts two players in a list
+// returns a list of new player objects
+const gameTypeBtns = document.querySelectorAll('.game-type')
+const resetBtn = document.querySelector('.reset-button')
+
+//here you can find the parameters needed to start a new game
+const startGame = (() => {
+    let playerList;
+    //find current player list
+    gameTypeBtns.forEach(e => {
+        playerList.push(e)
+        console.log(e)
+    });
+    //create two objects
+})();
+

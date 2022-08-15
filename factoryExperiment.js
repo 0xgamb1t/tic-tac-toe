@@ -1,5 +1,8 @@
 // a factory that accepts two players in a list
 // returns a list of new player objects
+const gameTypeBtns = document.querySelectorAll('.game-type')
+const resetBtn = document.querySelector('.reset-button')
+
 function playerFactory(gameTypeList) {
     let player1;
     let player2;
@@ -13,16 +16,12 @@ function playerFactory(gameTypeList) {
             tileBag : [],
             userMark : ((v == 0 ? 'X' : '0')),
             isTurn : ((v == 0) ? true : false), // player 0 [on the left] always goes first for simplicity xD
-            //game lets user > place tiiles, collect tiles, change name, change difficulty
             placeTiles() {},
-            //make a function that adds a tile to this users collection
             addTilesToBad(tile) {
                 this.tileBag.push(tile)
                 console.log(this.tileBag)
             },
-            //create a function that changes the username when writing make it look like you edit the page on the fly?
             changeUsername() {},
-            //change turn
             changeTurn() {}  
         }
         //saving the object to one of the two variables
@@ -35,6 +34,43 @@ function playerFactory(gameTypeList) {
     return players
 }
 
+const newGame = (() => {
+let player1;
+let player2;
+
+    function getPlayerList() {
+            gameTypeBtns.forEach(e => {
+                if (e.checked == true) {
+                    playerList = playerFactory(e.value.split(' '))
+                    playerList.forEach((e,v) => {
+                        (v = 0? player1 = e: player2 = e)
+                    });
+                    return playerList
+                } else{}
+            });
+    }getPlayerList();
+
+    console.log(`current players ${player1}`);
+    
+    //listen to see if
+    //1. game type is changed
+    //2. reset button is clicked        
+    gameTypeBtns.forEach(e => {
+        //reset Ui
+        e.addEventListener('change', () => {
+            console.log('game mode changed');
+            displayController.runNewGameUi();
+            //gameController.runNewGame();
+        })
+    });
+    
+    resetBtn.addEventListener('click', () => {
+        console.log('game reset');
+        displayController.runNewGameUi();
+        //gameController.runNewGame();
+    })
+})();
+
 
 const displayController = (() => {
     //reset when clicking the toggle or reset button
@@ -44,29 +80,8 @@ const displayController = (() => {
     //manage game type selection
     let playerList;
     
-    const gameTypeBtns = document.querySelectorAll('.game-type')
-    const resetBtn = document.querySelector('.reset-button')
 
-    const openMic = (() => {
-        //listen to see if
-        //1. game type is changed
-        //2. reset button is clicked
-        //3. a name has been input
-        gameTypeBtns.forEach(e => {
-            //reset Ui
-            e.addEventListener('change', () => {
-                            console.log('game mode changed');
-                            runNewGameUi();
-            })
-        });
-        
-        resetBtn.addEventListener('click', () => {
-            console.log('game reset');
-            runNewGameUi();
-        })
-    })();
-
-    function getGameType() {
+    function getPlayerList() {
             gameTypeBtns.forEach(e => {
                 if (e.checked == true) {
                     gameType = e.value.split(' ')
@@ -75,7 +90,9 @@ const displayController = (() => {
                     return playerList
                 } else{}
             });
-    }getGameType();
+    }getPlayerList();
+    console.log(playerList);
+
 
     //convert the string to the two players and create those unique objects
     function newPlayerUi() {
@@ -86,18 +103,15 @@ const displayController = (() => {
         
         //adds new ui
         playerList.forEach(e => {
-            let playerWrapper = document.createElement('div')
-            document.body.appendChild(playerWrapper)
+            let playerWrapper = document.body.appendChild(document.createElement('div'))
             playerWrapper.classList.add('player-wrapper', 'removable')
             //create human ui
             //label + input box + user input
-            let playerLabel = document.createElement('label')
-            playerWrapper.appendChild(playerLabel)
+            let playerLabel = playerWrapper.appendChild(document.createElement('label'))
             playerLabel.setAttribute('for', `${e.playerName}`)
             playerLabel.textContent = 'Username: '
 
-            let playerUsername = document.createElement('input')
-            playerWrapper.appendChild(playerUsername)
+            let playerUsername = playerWrapper.appendChild(document.createElement('input'))
             //create setAttribute helper
             playerUsername.setAttribute('name',`${e.playerName}`)
             playerUsername.setAttribute('type',`text`)
@@ -107,64 +121,54 @@ const displayController = (() => {
         });
     } newPlayerUi() //has to be a way to use es6 to not have this code i think
     
-    //run board code together
+    //creating board UI
     function newBoardUi() {
         //delete previous board substitute a new one
         //adding #game-container > .game-board to the body
-        const gameContainer = document.createElement('div')
+        const gameContainer = document.body.appendChild(document.createElement('div'))
         gameContainer.classList.add('game-container', 'removable')
-        document.body.appendChild(gameContainer)
+        
 
-        const gameBoard = document.createElement('div')
+        const gameBoard = gameContainer.appendChild(document.createElement('div'))
         gameBoard.classList.add('game-board')
-        gameContainer.appendChild(gameBoard)
-
-        //creating board components
+        
+        //creating components | board | rows | tiles
         let board =  [           
                     ['', '', ''],    
                     ['', '', ''],
                     ['', '', '']
                 ];
 
-        //creating a board with the amount of rows in the board array
-        //needs to be a better way for this variable
+        //fix this 
         let squareCounter = 1
 
+        //creating 9 unique tiles from the board array[array] t1-t9
         board.forEach((row, index) => {
-            const boardRow = document.createElement('div')
+            const boardRow = gameBoard.appendChild(document.createElement('div'))
             boardRow.classList.add('row', `r${index + 1}`)
-            gameBoard.appendChild(boardRow)
-            //creating tiles with column indexes for css
             //Theory: it'll be much simpler to style the lines in css
             row.forEach((tile, index) => {
-                tile = document.createElement('div')
-                boardRow.appendChild(tile)
-                //column number + unique id per tile
+                tile = boardRow.appendChild(document.createElement('div'))
                 tile.classList.add(`tile`, `c${index + 1}`)
                 tile.setAttribute('id', `t${squareCounter}`)
-                
                 squareCounter += 1;
             });
         });
     }newBoardUi();
-    //if twoplayer is selected create to username:input fields 
-    //if human and
     
-    function runNewGameUi() {
-        //delete old
-        //deleteUi();
-        //create new!
-        getGameType();
+    const runNewGameUi = (() => {
+        getPlayerList();
         newPlayerUi();
         newBoardUi();
         console.log('new game started!');
-        }
+    })
+
+    return{getPlayerList, runNewGameUi}
 })();
 
 
-const createGame = (() => {
-    //createGame
-    //
+//game functionality
+const gameController = (() => {
     const gameSquare = document.querySelectorAll('.tile')
 
     winningCombinations = [
@@ -181,19 +185,12 @@ const createGame = (() => {
 
     function checkWinner() {
         //looking to see if the current board matches a winning selection
-        
-
         if (playerOneTiles.length > 2  || playerTwoTiles.length > 2) {
             console.log('someone could have won by now');
-            //see if someone won
-
             //if the permutations of the player tiles makes up a winning combination declare a winner
             //if all 9 tiles have been used and no winner is found there is a tie
         }
     }
-
-    let playerOneTiles = []
-    let playerTwoTiles = []
 
     function logState(t) {
         if (currentPlayerCharacter == 'X') {
@@ -212,12 +209,11 @@ const createGame = (() => {
         console.log('board shakes!')
     }
 
+
     //what happens when clicked
     gameSquare.forEach(square => {
         square.addEventListener('click', () => {
             console.log(`you have just clicked square ${square.id}`);
-
-            //if square is empty apply current player mark
             if (square.textContent == ''){
                 //checkPlayerTurn()
                 square.textContent = currentPlayerCharacter
@@ -234,16 +230,26 @@ const createGame = (() => {
                 shake()
             }
         })
-        
+            
     });
-
 })();
+
+
+    
+
+    
+    
+
+
+    
+
     
 
 // players = playerFactory(meatVMeat)
 // player1 = players[0]
 // player2= players[1]
 // console.log(player1);
+
 
 
 
