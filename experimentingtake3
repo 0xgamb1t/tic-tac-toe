@@ -1,194 +1,206 @@
+// Things learned: 1. reference in memory vs value 2.using arrow functions are sometimes weird ('this.something') 3.reduce levels of abstraction 4.class [syntactic sugar], factory functions, modules, extening classes, isolating variables
+
+
 // a factory that accepts two players in a list
 // returns a list of new player objects
 const gameTypeBtns = document.querySelectorAll('.game-type')
 const resetBtn = document.querySelector('.reset-button')
-const currentPlayerObjs = []
-
+//updated in initiatePlayers
+let currentPlayers = []
+//updated in in initiateUserInterface
+let currentBoard = []
 
 
 //module that checks what game-type is checked and creates a player list off that : can it just make the two
-const checkGameType = (() => {
-    console.log('checkingGameType');
-    let currentPlayerList = []
-    let playerObjects = []
-    let player1;
-    let player2;
+const initiatePlayers = (() => {
+    let gameType = []
+    currentPlayers = []
 
     //find current player list
-    function createCurrentPlayerList() { //module function
-        console.log('creating current player list');
+    function checkGameType() { //module function
+        console.log('checking game type');
         
         gameTypeBtns.forEach(e => { //block function for getPlayer
             if (e.checked) {
                 let playerList = e.value.split(' ')
-                currentPlayerList = []
-                currentPlayerList.push(playerList[0], playerList[1])
+                gameType = []
+                gameType.push(playerList[0], playerList[1])
+                // currentPlayerList.push({player: 'player1', type : playerList[0]},{player: 'player2', type : playerList[1]})
+                console.log(`gametype selected: ${gameType}`);                
             }
         });
     };
 
-
-    function Player () {
-        //this.player    =   `player${v+1}`,
-        //this.username  =   e,
-        this.tilebag   =   []
-        //this.isTurn    =   ((v == 0)? true: false)
-    }
-
     function createPlayers () {
+        console.log('creating humans and robots');
         //create differences for humans and robots
         playerObjects = []
         
-        currentPlayerList.forEach((e, v) => {
+        gameType.forEach((e, v) => {
             //create a player
             class Player {
-                player    =   `player${v+1}`
-                type      =   e
-                tilebag   =   []
-                isTurn    =   ((v == 0)? true: false)
-                isHuman   =   ((e == 'human')? true: false)
-  
-                changeTurn() {}  
-                addTileToBag() {}
-            }
+                constructor () {
+                    this.player    =   `player${v+1}`
+                    this.type      =   e
+                    this.tilebag   =   []
+                    this.isTurn    =   ((v == 0)? true: false)
+                    this.isHuman   =   ((e == 'human')? true: false)
+                    this.winner    =   false
+                }
+                    
+                    createUi() {
+                        let playerWrapper = document.body.appendChild(document.createElement('div'))
+                        playerWrapper.classList.add('player-wrapper', 'removable')
+
+                        let playerLabel = playerWrapper.appendChild(document.createElement('label'))
+                        playerLabel.setAttribute('for', `${this.type}`)
+                        playerLabel.textContent = 'Username: '
+
+                        let playerUsername = playerWrapper.appendChild(document.createElement('input'))
+                        playerUsername.setAttribute('name',`${e.playerName}`)
+                        playerUsername.setAttribute('type',`text`)
+                        playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
+                        playerUsername.setAttribute('placeholder',`${e.playerName}`)
+                    }
+                    changeTurn() {
+                        this.isTurn = !(this.isTurn)
+                    }  
+                    addTileToBag(tile) {
+                        this.tilebag.push(tile)
+                    }
+                    checkWin() {
+                        //if any of these collection of 3 tiles is in the tile bag declare a winner
+                    }
+
+            }            
 
             class Human extends Player {
-                isHuman = true
+                // function shake() {}
             }
 
             class Robot extends Player {
-                isHuman = false
+                // isHuman = false
             }
 
+            //*reference in memory vs value
             if(e == 'human') {
-                const newHuman = new Human()
-                playerObjects.push(newHuman)
-                //if (v==0) {player1 = newHuman}else{player2 = newHuman} //save this to player 1 or 2
+                let newHuman = new Human()
+                console.log(newHuman);
+                console.log('new human created');
+                currentPlayers.push(newHuman)
+                // if (v==0) {player1 = newHuman}else{player2 = newHuman} //save this to player 1 or 2
                 console.log(`player ${v + 1} is human`);
                 
             } else {
-                const newRobot = new Robot()
-                playerObjects.push(newRobot)
-                //if (v==0) {player1 = newRobot}else{ player2 = newRobot}
+                let newRobot = new Robot()
+                console.log('new robot created');
+                currentPlayers.push(newRobot)
+                // if (v==0) {player1 = newRobot}else{ player2 = newRobot}
                 console.log(`player ${v + 1} is a robot`);
             }
         });        
     }
 
+    
     function freshGame() {
         console.log('Fresh game initiated!');
-        createCurrentPlayerList()
+        currentPlayers = []
+        checkGameType()
         createPlayers()
-        console.log('new players have landed')
-        
-        console.log(playerObjects);
-        return currentPlayerObjs
+        // currentPlayers = [player1, player2]
+        console.log(currentPlayers);
     }freshGame()
-
-
     
+//listeners that create new players
     listeners = (() => {
-    
-        gameTypeBtns.forEach(e => {
-            e.addEventListener('click', () => {freshGame()})
-        }); 
-
+        gameTypeBtns.forEach(e => {e.addEventListener('click', () => {freshGame()})}); 
         resetBtn.addEventListener('click', () => {freshGame()})
     })();   
 
 })();
 
 
-// //gets the player list of obejcts from the get players function.
-// const displayController = (() => {
-//     console.log('displayControllerActive');
-//     let playerList = currentPlayerObjs
-    
-//     //creates new player UIs
-//     function newPlayerUi() {
-//         //remove all ui with a 'removable' class
-//         document.querySelectorAll('.removable').forEach(e => {
-//             e.remove()
-//         });
+const initiateInterface = (() => {
+    console.log('new interface initiated');
+    let playerList = currentPlayers
+
+    function createPlayerUi() {
+        //remove all ui with a 'removable' class
+        document.querySelectorAll('.removable').forEach(e => {e.remove()});
+        playerList.forEach(e => {
+            e.createUi()
+        });
+    }createPlayerUi();
+
+    //creating board UI
+    function newBoardUi() {
+        //delete previous board substitute a new one
+        //adding #game-container > .game-board to the body
+        const gameContainer = document.body.appendChild(document.createElement('div'))
+        gameContainer.classList.add('game-container', 'removable')
         
-//         //adds new ui per item in the playerList
-//         playerList.forEach(e => {
-//             let playerWrapper = document.body.appendChild(document.createElement('div'))
-//             playerWrapper.classList.add('player-wrapper', 'removable')
-
-//             let playerLabel = playerWrapper.appendChild(document.createElement('label'))
-//             playerLabel.setAttribute('for', `${e.playerName}`)
-//             playerLabel.textContent = 'Username: '
-
-//             let playerUsername = playerWrapper.appendChild(document.createElement('input'))
-//             //create setAttribute helper
-//             playerUsername.setAttribute('name',`${e.playerName}`)
-//             playerUsername.setAttribute('type',`text`)
-//             playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
-//             playerUsername.setAttribute('placeholder',`${e.playerName}`)
-//             //create robot ui
-//         });
-//     } newPlayerUi() //has to be a way to use es6 to not have this code i think
-    
-//     //creating board UI
-//     function newBoardUi() {
-//         //delete previous board substitute a new one
-//         //adding #game-container > .game-board to the body
-//         const gameContainer = document.body.appendChild(document.createElement('div'))
-//         gameContainer.classList.add('game-container', 'removable')
+        const gameBoard = gameContainer.appendChild(document.createElement('div'))
+        gameBoard.classList.add('game-board')
         
-//         const gameBoard = gameContainer.appendChild(document.createElement('div'))
-//         gameBoard.classList.add('game-board')
-        
-//         //creating components | board | rows | tiles
-//         let board =  [           
-//                     ['', '', ''],    
-//                     ['', '', ''],
-//                     ['', '', '']
-//                 ];
+        //creating components | board | rows | tiles
+        let board =  [           
+                    ['', '', ''],    
+                    ['', '', ''],
+                    ['', '', '']
+                ];
 
-//         //fix this 
-//         let squareCounter = 1
+        //fix this 
+        let squareCounter = 1
 
-//         //creating 9 unique tiles from the board array[array] t1-t9
-//         board.forEach((row, index) => {
-//             const boardRow = gameBoard.appendChild(document.createElement('div'))
-//             boardRow.classList.add('row', `r${index + 1}`)
-//             //Theory: it'll be much simpler to style the lines in css
-//             row.forEach((tile, index) => {
-//                 tile = boardRow.appendChild(document.createElement('div'))
-//                 tile.classList.add(`tile`, `c${index + 1}`)
-//                 tile.setAttribute('id', `t${squareCounter}`)
-//                 squareCounter += 1;
-//             });
-//         });
-//     }newBoardUi();
-//     //creating a node list to be used 
-// })();
-
-// const gameLogic = (() => {
-//     const board = document.querySelectorAll('.tile')
-//     let currentPlayer;
+        //creating 9 unique tiles from the board array[array] t1-t9
+        board.forEach((row, index) => {
+            const boardRow = gameBoard.appendChild(document.createElement('div'))
+            boardRow.classList.add('row', `r${index + 1}`)
+            //Theory: it'll be much simpler to style the lines in css
+            row.forEach((tile, index) => {
+                tile = boardRow.appendChild(document.createElement('div'))
+                tile.classList.add(`tile`, `c${index + 1}`)
+                tile.setAttribute('id', `t${squareCounter}`)
+                squareCounter += 1;
+                currentBoard.push(tile)
+            });
+        });
+    }newBoardUi();
     
+    
+})();
 
-//     let playerList = currentPlayerObjs
-//     player1 = playerList[0]
-//     player2 = playerList[1]
+const initiateGame = (() => {
+    //can any part of the code access the html?
+    //takes the current board and starts pass
 
-//     console.log(player1.playerType);
-   
+    //get list of players
+    let player1 = currentPlayers[0]
+    let player2 = currentPlayers[1]
 
+    let currentPlayer;
+    let deadBoard = currentBoard;
 
-//     board.forEach(tile => {
-//         tile.addEventListener('click', () => {
-//                 if (tile.textContent == ''){
-//                     //add to player
-//                     console.log(`tile ${tile.id} was clicked`);
-//             }
-//         })
-//     });
+    console.log(currentBoard[0].__proto__)
+    console.log(currentBoard.length)
+    
+    function tileTap() {
+        //if the current board is live
+        console.log();
+        
+        if (currentBoard > 0) {
+            currentBoard.forEach(tile => {
+                tile.addEventListener('click', () => {
+                    console.log(`tile ${tile} has been popped`);
+                    console.log(tile.id);
+                    console.log(currentBoard);
+                    deadBoard.push(currentBoard.pop(tile))
+                })
+            });
+        } else {
+            console.log('games a tie');
+            
+        }
+    }tileTap();
 
-//     console.log('gameLogicActive');
-//     console.log(playerList)
-// })();
-
+})();
