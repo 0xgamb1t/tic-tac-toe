@@ -106,7 +106,7 @@ const initiatePlayers = (() => {
         currentPlayers = []
         checkGameType()
         createPlayers()
-        console.log(`deploying game type: ${gameType}`);
+        console.log(`game type found: ${gameType}`);
     }freshGame()
 
 //listeners that create new players
@@ -182,40 +182,46 @@ const initiateInterface = (() => {
 })();
 
 const initiateGame = (() => {    
-    //get list of players
-    
-    let player1 = currentPlayers[0]
-    let player2 = currentPlayers[1]
-    deadBoard = []
-
-    let currentPlayer = player1;
-
     function tileTap() {
-        //if the current board is live
-        console.log(currentBoard)
-        currentBoard.forEach(tile => {
-            tile.addEventListener('click', () => { 
+         //get list of players
+        let player1 = currentPlayers[0]
+        let player2 = currentPlayers[1]
+        deadBoard = []
 
-                //if the tile has been clicked shake
-            })
-        })
-    
-    for (1=0; i<9; i++){
-        if (currentPlayer.type == 'human'){
-            currentBoard.forEach(e => {
-                e.onclick = function(){
+        //starts as player 1
+        let currentPlayer = player1;
+
+        console.log(`${player1.id} the ${player1.type} VS ${player2.id} the ${player2.type} `);
+        
+        currentBoard.forEach(tile => {
+            tile.addEventListener('click', () => {
+                if(currentPlayer.isHuman && tile.textContent == ''){
+                    console.log(`${currentPlayer.id} pressed ${tile.id}`);
+                    console.log(currentPlayer.mark);
+                    tile.textContent = currentPlayer.mark;
+                    (currentPlayer == player1? currentPlayer = player2: currentPlayer = player1)
+                    //check if current player won
+                    //check if game is a tie
+                    //change players
+                    return;// wow this line took 4 days to figure out
+                }else{
+                    console.log('doing robot things');
                     
+                    //do what a robot would do
+                    //determine ai level
+                    //play move
                 }
-            });
-        //if a tile is clicked add tile to bag
-        //add mark to display
-        //change to next player
-        }else{}
+            })
+        });
+
+
     }
 
+
+
+
     function freshGame() {
-        console.log('New game starting');
-        tileTap()       
+        tileTap()
     }freshGame()
     
 //listeners that create new players
@@ -223,5 +229,7 @@ const initiateGame = (() => {
         gameTypeBtns.forEach(e => {e.addEventListener('click', () => {freshGame()})}); 
         resetBtn.addEventListener('click', () => {freshGame()})
     })();   
+
+ 
 })();
 
