@@ -1,5 +1,6 @@
 // Things learned: 1. reference in memory vs value 2.using arrow functions are sometimes weird ('this.something') 3.reduce levels of abstraction 4.class [syntactic sugar], factory functions, modules, extening classes, isolating variables
 
+//objects all the way down === objects all the way down
 
 // a factory that accepts two players in a list
 // returns a list of new player objects
@@ -18,7 +19,6 @@ const initiatePlayers = (() => {
 
     //find current player list
     function checkGameType() { //module function
-        console.log('checking game type');
         
         gameTypeBtns.forEach(e => { //block function for getPlayer
             if (e.checked) {
@@ -26,13 +26,13 @@ const initiatePlayers = (() => {
                 gameType = []
                 gameType.push(playerList[0], playerList[1])
                 // currentPlayerList.push({player: 'player1', type : playerList[0]},{player: 'player2', type : playerList[1]})
-                console.log(`gametype selected: ${gameType}`);                
+                //console.log(`gametype selected: ${gameType}`);                
             }
         });
     };
 
     function createPlayers () {
-        console.log('creating humans and robots');
+        //console.log('creating humans and robots');
         //create differences for humans and robots
         playerObjects = []
         
@@ -40,12 +40,13 @@ const initiatePlayers = (() => {
             //create a player
             class Player {
                 constructor () {
-                    this.player    =   `player${v+1}`
+                    this.id        =   `player${v+1}`
                     this.type      =   e
                     this.tilebag   =   []
                     this.isTurn    =   ((v == 0)? true: false)
                     this.isHuman   =   ((e == 'human')? true: false)
                     this.winner    =   false
+                    this.mark      =   ((v==0)? 'X': 'O')
                 }
                     
                     createUi() {
@@ -57,10 +58,10 @@ const initiatePlayers = (() => {
                         playerLabel.textContent = 'Username: '
 
                         let playerUsername = playerWrapper.appendChild(document.createElement('input'))
-                        playerUsername.setAttribute('name',`${e.playerName}`)
+                        playerUsername.setAttribute('name',`${e}`)
                         playerUsername.setAttribute('type',`text`)
-                        playerUsername.setAttribute('id',`${e.playerName}`) // make the index of the game mode the number after person or robot
-                        playerUsername.setAttribute('placeholder',`${e.playerName}`)
+                        playerUsername.setAttribute('id',`${this.id}`) // make the index of the game mode the number after person or robot
+                        playerUsername.setAttribute('placeholder',`${e}`)
                     }
                     changeTurn() {
                         this.isTurn = !(this.isTurn)
@@ -85,18 +86,16 @@ const initiatePlayers = (() => {
             //*reference in memory vs value
             if(e == 'human') {
                 let newHuman = new Human()
-                console.log(newHuman);
-                console.log('new human created');
+                //console.log(newHuman);
                 currentPlayers.push(newHuman)
                 // if (v==0) {player1 = newHuman}else{player2 = newHuman} //save this to player 1 or 2
-                console.log(`player ${v + 1} is human`);
+                //console.log(`player ${v + 1} is human`);
                 
             } else {
                 let newRobot = new Robot()
-                console.log('new robot created');
                 currentPlayers.push(newRobot)
                 // if (v==0) {player1 = newRobot}else{ player2 = newRobot}
-                console.log(`player ${v + 1} is a robot`);
+                //console.log(`player ${v + 1} is a robot`);
             }
         });        
     }
@@ -107,10 +106,9 @@ const initiatePlayers = (() => {
         currentPlayers = []
         checkGameType()
         createPlayers()
-        // currentPlayers = [player1, player2]
-        console.log(currentPlayers);
+        console.log(`deploying game type: ${gameType}`);
     }freshGame()
-    
+
 //listeners that create new players
     listeners = (() => {
         gameTypeBtns.forEach(e => {e.addEventListener('click', () => {freshGame()})}); 
@@ -121,19 +119,18 @@ const initiatePlayers = (() => {
 
 
 const initiateInterface = (() => {
-    console.log('new interface initiated');
-    let playerList = currentPlayers
-
     function createPlayerUi() {
+        let playerList = currentPlayers
         //remove all ui with a 'removable' class
         document.querySelectorAll('.removable').forEach(e => {e.remove()});
         playerList.forEach(e => {
             e.createUi()
         });
-    }createPlayerUi();
+    }
 
     //creating board UI
     function newBoardUi() {
+        currentBoard = []
         //delete previous board substitute a new one
         //adding #game-container > .game-board to the body
         const gameContainer = document.body.appendChild(document.createElement('div'))
@@ -161,46 +158,70 @@ const initiateInterface = (() => {
                 tile = boardRow.appendChild(document.createElement('div'))
                 tile.classList.add(`tile`, `c${index + 1}`)
                 tile.setAttribute('id', `t${squareCounter}`)
+                // tile.setAttribute('clicked', false)
+                // currentBoard[squareCounter] = tile[squareCounter]
                 squareCounter += 1;
                 currentBoard.push(tile)
             });
         });
-    }newBoardUi();
+    }
+
+    function freshGame() {
+        console.log('New UI being deployed');
+        createPlayerUi()
+        newBoardUi()        
+    }freshGame()
+    
+//listeners that create new players
+    listeners = (() => {
+        gameTypeBtns.forEach(e => {e.addEventListener('click', () => {freshGame()})}); 
+        resetBtn.addEventListener('click', () => {freshGame()})
+    })();   
     
     
 })();
 
-const initiateGame = (() => {
-    //can any part of the code access the html?
-    //takes the current board and starts pass
-
+const initiateGame = (() => {    
     //get list of players
+    
     let player1 = currentPlayers[0]
     let player2 = currentPlayers[1]
+    deadBoard = []
 
-    let currentPlayer;
-    let deadBoard = currentBoard;
+    let currentPlayer = player1;
 
-    console.log(currentBoard[0].__proto__)
-    console.log(currentBoard.length)
-    
     function tileTap() {
         //if the current board is live
-        console.log();
-        
-        if (currentBoard > 0) {
-            currentBoard.forEach(tile => {
-                tile.addEventListener('click', () => {
-                    console.log(`tile ${tile} has been popped`);
-                    console.log(tile.id);
-                    console.log(currentBoard);
-                    deadBoard.push(currentBoard.pop(tile))
-                })
-            });
-        } else {
-            console.log('games a tie');
-            
-        }
-    }tileTap();
+        console.log(currentBoard)
+        currentBoard.forEach(tile => {
+            tile.addEventListener('click', () => { 
 
+                //if the tile has been clicked shake
+            })
+        })
+    
+    for (1=0; i<9; i++){
+        if (currentPlayer.type == 'human'){
+            currentBoard.forEach(e => {
+                e.onclick = function(){
+                    
+                }
+            });
+        //if a tile is clicked add tile to bag
+        //add mark to display
+        //change to next player
+        }else{}
+    }
+
+    function freshGame() {
+        console.log('New game starting');
+        tileTap()       
+    }freshGame()
+    
+//listeners that create new players
+    listeners = (() => {
+        gameTypeBtns.forEach(e => {e.addEventListener('click', () => {freshGame()})}); 
+        resetBtn.addEventListener('click', () => {freshGame()})
+    })();   
 })();
+
