@@ -2,6 +2,9 @@
 
 //objects all the way down === objects all the way down
 
+//couldnt find a way to create a loop that does the following (primarily because of the input necessary):
+//if player.isHuman => create click events => if clicked switch to next player => if next pla
+
 // a factory that accepts two players in a list
 // returns a list of new player objects
 const gameTypeBtns = document.querySelectorAll('.game-type')
@@ -10,6 +13,7 @@ const resetBtn = document.querySelector('.reset-button')
 let currentPlayers = []
 //updated in in initiateUserInterface
 let currentBoard = []
+
 
 
 //module that checks what game-type is checked and creates a player list off that : can it just make the two
@@ -53,9 +57,9 @@ const initiatePlayers = (() => {
                         let playerWrapper = document.body.appendChild(document.createElement('div'))
                         playerWrapper.classList.add('player-wrapper', 'removable')
 
-                        let playerLabel = playerWrapper.appendChild(document.createElement('label'))
-                        playerLabel.setAttribute('for', `${this.type}`)
-                        playerLabel.textContent = 'Username: '
+                        // let playerLabel = playerWrapper.appendChild(document.createElement('label'))
+                        // playerLabel.setAttribute('for', `${this.type}`)
+                        // playerLabel.textContent = 'Username: '
 
                         let playerUsername = playerWrapper.appendChild(document.createElement('input'))
                         playerUsername.setAttribute('name',`${e}`)
@@ -70,6 +74,9 @@ const initiatePlayers = (() => {
                         this.tilebag.push(tile)
                     }
                     checkWin() {
+                        this.tilebag.forEach(e => {
+                            
+                        });
                         //if any of these collection of 3 tiles is in the tile bag declare a winner
                     }
 
@@ -193,26 +200,98 @@ const initiateGame = (() => {
 
         console.log(`${player1.id} the ${player1.type} VS ${player2.id} the ${player2.type} `);
         
+        //if the current player is a robot
+        if (!currentPlayer.isHuman){
+            for (let i=0; i < 9; i++){
+                robotPlay()
+            }
+        }
+
         currentBoard.forEach(tile => {
             tile.addEventListener('click', () => {
                 if(currentPlayer.isHuman && tile.textContent == ''){
                     console.log(`${currentPlayer.id} pressed ${tile.id}`);
                     console.log(currentPlayer.mark);
                     tile.textContent = currentPlayer.mark;
-                    (currentPlayer == player1? currentPlayer = player2: currentPlayer = player1)
+                    currentPlayer.addTileToBag(tile.id)
+                    console.log(currentPlayer.tilebag);
                     //check if current player won
+
                     //check if game is a tie
                     //change players
-                    return;// wow this line took 4 days to figure out
-                }else{
-                    console.log('doing robot things');
                     
-                    //do what a robot would do
-                    //determine ai level
-                    //play move
+                    (currentPlayer == player1? currentPlayer = player2: currentPlayer = player1);
+                    if (!currentPlayer.isHuman){
+                        robotPlay();
+                    }
+                    //if the next player is a robot run robot command
+                    
+                    return;
+                }else{
+                    console.log('shake');
                 }
             })
         });
+
+        function robotPlay(){
+                let liveBoard = []
+                //check open squares
+                currentBoard.forEach(e => {                    
+                    if (e.textContent == ''){
+                        liveBoard.push(e.id)
+                        console.log(liveBoard);
+                    }
+                });
+        }
+
+        winningBoard = [['t1', 't2', 't3'],
+                        ['t4', 't5', 't6'],
+                        ['t7', 't8', 't9'],
+                        ['t1', 't4', 't7'],
+                        ['t2', 't5', 't8'],
+                        ['t3', 't6', 't9'],
+                        ['t1', 't5', 't9'],
+                        ['t3', 't5', 't7']]
+
+
+        let trial = [5,4,2]
+        console.log(trial);
+        
+        console.log(trial.sort());
+        
+        list = ['1','2','3','4','5']
+        function combinations (winningBoard === 0) return [ [] ];
+            const firdtEl = playerBag[0];
+
+
+        }
+        
+        
+        function checkWinner(playerBag, winningBoard){
+            let player1Combinations;
+            let player2Combinations;
+
+            if (playerBag.length >= 3){
+                console.log(player1Combinations);
+                
+                //check to see if any combination of 3 tiles makes a winning combination
+                //create all possible permutations of 3 tiles
+                //check if any permutation
+
+            }
+
+            // if (playerBag.length < 3){
+            //     'not enough tiles to win'
+            // } else {
+
+            // }
+        
+                // const randomSquare = Math.floor(Math.random() * liveBoard.length);
+                console.log(liveBoard);
+                console.log(`robot turn executed`);
+
+                (currentPlayer == player1? currentPlayer = player2: currentPlayer = player1);
+        }
 
 
     }
