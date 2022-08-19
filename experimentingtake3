@@ -46,7 +46,7 @@ const initiatePlayers = (() => {
                 constructor () {
                     this.id        =   `player${v+1}`
                     this.type      =   e
-                    this.tilebag   =   []
+                    this.tileBag   =   []
                     this.isTurn    =   ((v == 0)? true: false)
                     this.isHuman   =   ((e == 'human')? true: false)
                     this.winner    =   false
@@ -69,14 +69,36 @@ const initiatePlayers = (() => {
                     }
                     changeTurn() {
                         this.isTurn = !(this.isTurn)
-                    }  
+                    };  
                     addTileToBag(tile) {
-                        this.tilebag.push(tile)
-                    }
-                    checkWin() {
-                        this.tilebag.forEach(e => {
+                        this.tileBag.push(tile)
+                    };
+
+                    checkWin(bag) {
+                        //im going to assume the array is more than three [can only be 4 or 5]
+                        //got too lazy here to figure out recursion since there arent that many possible combos
+                        if (bag.length <= 2){
+                            console.log("can't win yet"); 
+                            console.log(bag.length);
+                              
+                        } else if(bag.length == 3) {
+                            if ([bag[0], bag[1], bag[2]].sort() in winningBoard){
+                                console.log('winner!');
+                            }
+                        } else if(bag.length == 4) {
+                            let playerCombos = [[bag[0], bag[2], bag[3]].sort(),
+                                                [bag[1], bag[2], bag[3]].sort()]
                             
-                        });
+                            console.log(playerCombos);
+
+                            playerCombos.forEach(e => {
+                                if (e in winningBoard){
+                                    console.log('winner!');    
+                                } else {
+                                    console.log('Looooosssseeeerrrr!!!!');
+                                }
+                            });
+                        }
                         //if any of these collection of 3 tiles is in the tile bag declare a winner
                     }
 
@@ -214,13 +236,14 @@ const initiateGame = (() => {
                     console.log(currentPlayer.mark);
                     tile.textContent = currentPlayer.mark;
                     currentPlayer.addTileToBag(tile.id)
-                    console.log(currentPlayer.tilebag);
+                    console.log(currentPlayer.tileBag);
+                    currentPlayer.checkWin(currentPlayer.tileBag)
                     //check if current player won
 
                     //check if game is a tie
                     //change players
                     
-                    (currentPlayer == player1? currentPlayer = player2: currentPlayer = player1);
+                    if (currentPlayer == player1? currentPlayer = player2: currentPlayer = player1);
                     if (!currentPlayer.isHuman){
                         robotPlay();
                     }
@@ -254,17 +277,9 @@ const initiateGame = (() => {
                         ['t3', 't5', 't7']]
 
 
-        let trial = [5,4,2]
-        console.log(trial);
-        
-        console.log(trial.sort());
-        
-        list = ['1','2','3','4','5']
-        function combinations (winningBoard === 0) return [ [] ];
-            const firdtEl = playerBag[0];
 
+        
 
-        }
         
         
         function checkWinner(playerBag, winningBoard){
