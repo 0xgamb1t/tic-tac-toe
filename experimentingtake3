@@ -74,32 +74,22 @@ const initiatePlayers = (() => {
                         this.tileBag.push(tile)
                     };
 
-                    checkWin(bag) {
-                        //im going to assume the array is more than three [can only be 4 or 5]
-                        //got too lazy here to figure out recursion since there arent that many possible combos
-                        if (bag.length <= 2){
-                            console.log("can't win yet"); 
-                            console.log(bag.length);
-                              
-                        } else if(bag.length == 3) {
-                            if ([bag[0], bag[1], bag[2]].sort() in winningBoard){
-                                console.log('winner!');
-                            }
-                        } else if(bag.length == 4) {
-                            let playerCombos = [[bag[0], bag[2], bag[3]].sort(),
-                                                [bag[1], bag[2], bag[3]].sort()]
-                            
-                            console.log(playerCombos);
-
-                            playerCombos.forEach(e => {
-                                if (e in winningBoard){
-                                    console.log('winner!');    
-                                } else {
-                                    console.log('Looooosssseeeerrrr!!!!');
-                                }
-                            });
-                        }
-                        //if any of these collection of 3 tiles is in the tile bag declare a winner
+                    checkWin() {
+                        console.log('checking if player won');
+                        console.log(currentBoard[0].textContent ,currentBoard[1].textContent, currentBoard[2].textContent);
+                        
+                        //if select squares have x's or o's consider it a win
+                    if 
+                    ((currentBoard[0].textContent == 'X' && currentBoard[1].textContent == 'X' && currentBoard[2].textContent == 'X') ||
+                    (currentBoard[3].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[5].textContent == 'X') ||
+                    (currentBoard[6].textContent == 'X' && currentBoard[7].textContent == 'X' && currentBoard[8].textContent == 'X') ||
+                    (currentBoard[0].textContent == 'X' && currentBoard[3].textContent == 'X' && currentBoard[6].textContent == 'X') ||
+                    (currentBoard[1].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[7].textContent == 'X') ||
+                    (currentBoard[2].textContent == 'X' && currentBoard[5].textContent == 'X' && currentBoard[8].textContent == 'X') ||
+                    (currentBoard[0].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[8].textContent == 'X') ||
+                    (currentBoard[2].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[6].textContent == 'X')) 
+                        
+                        {console.log('winner');} //if true display the winner & make is so you can't click > it shakes
                     }
 
             }            
@@ -115,7 +105,6 @@ const initiatePlayers = (() => {
             //*reference in memory vs value
             if(e == 'human') {
                 let newHuman = new Human()
-                //console.log(newHuman);
                 currentPlayers.push(newHuman)
                 // if (v==0) {player1 = newHuman}else{player2 = newHuman} //save this to player 1 or 2
                 //console.log(`player ${v + 1} is human`);
@@ -237,7 +226,7 @@ const initiateGame = (() => {
                     tile.textContent = currentPlayer.mark;
                     currentPlayer.addTileToBag(tile.id)
                     console.log(currentPlayer.tileBag);
-                    currentPlayer.checkWin(currentPlayer.tileBag)
+                    currentPlayer.checkWin()
                     //check if current player won
 
                     //check if game is a tie
