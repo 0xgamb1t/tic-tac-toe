@@ -80,15 +80,15 @@ const initiatePlayers = (() => {
                         
                         //if select squares have x's or o's consider it a win
                     if 
-                    ((currentBoard[0].textContent == 'X' && currentBoard[1].textContent == 'X' && currentBoard[2].textContent == 'X') ||
-                    (currentBoard[3].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[5].textContent == 'X') ||
-                    (currentBoard[6].textContent == 'X' && currentBoard[7].textContent == 'X' && currentBoard[8].textContent == 'X') ||
-                    (currentBoard[0].textContent == 'X' && currentBoard[3].textContent == 'X' && currentBoard[6].textContent == 'X') ||
-                    (currentBoard[1].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[7].textContent == 'X') ||
-                    (currentBoard[2].textContent == 'X' && currentBoard[5].textContent == 'X' && currentBoard[8].textContent == 'X') ||
-                    (currentBoard[0].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[8].textContent == 'X') ||
-                    (currentBoard[2].textContent == 'X' && currentBoard[4].textContent == 'X' && currentBoard[6].textContent == 'X')) 
-                        
+                    ((currentBoard[0].textContent == this.mark && currentBoard[1].textContent == this.mark && currentBoard[2].textContent == this.mark) ||
+                    (currentBoard[3].textContent == this.mark && currentBoard[4].textContent == this.mark && currentBoard[5].textContent == this.mark) ||
+                    (currentBoard[6].textContent == this.mark && currentBoard[7].textContent == this.mark && currentBoard[8].textContent == this.mark) ||
+                    (currentBoard[0].textContent == this.mark && currentBoard[3].textContent == this.mark && currentBoard[6].textContent == this.mark) ||
+                    (currentBoard[1].textContent == this.mark && currentBoard[4].textContent == this.mark && currentBoard[7].textContent == this.mark) ||
+                    (currentBoard[2].textContent == this.mark && currentBoard[5].textContent == this.mark && currentBoard[8].textContent == this.mark) ||
+                    (currentBoard[0].textContent == this.mark && currentBoard[4].textContent == this.mark && currentBoard[8].textContent == this.mark) ||
+                    (currentBoard[2].textContent == this.mark && currentBoard[4].textContent == this.mark && currentBoard[6].textContent == this.mark)) 
+                        this.winner = true;
                         {console.log('winner');} //if true display the winner & make is so you can't click > it shakes
                     }
 
